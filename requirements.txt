@@ -1,0 +1,14 @@
+pandas
+pytest
+matplotlib
+numpy
+opencv-python
+tensorflow
+scikit-learn
+fastapi 
+sqlalchemy 
+uvicorn
+pydantic
+psycopg2
+psycopg2-binary
+asyncpg
