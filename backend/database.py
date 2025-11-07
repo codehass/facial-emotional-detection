@@ -1,22 +1,41 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import declarative_base, sessionmaker
+import os
+from dotenv import load_dotenv
 
-DATABASE_URL = "postgresql://postgres:123456@localhost:5432/facial_recognition_database"
-ASYNC_DATABASE_URL = (
-    "postgresql+asyncpg://postgres:123456@localhost:5432/facial_recognition_database"
-)
+load_dotenv()
 
-# Synchronous engine for migrations and initial setup
+USER = os.getenv("USER_DB")
+PASSWORD = os.getenv("PASSWORD")
+HOST = os.getenv("HOST")
+PORT = os.getenv("PORT")
+DATABASE = os.getenv("DATABASE")
+
+
+print(USER)
+
+DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
 engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Asynchronous engine for FastAPI
-async_engine = create_async_engine(ASYNC_DATABASE_URL)
-async_session = sessionmaker(async_engine, class_=AsyncSession, expire_on_commit=False)
+with engine.connect() as conn:
+    result = conn.execute(
+        text("SELECT 1 FROM pg_catalog.pg_database WHERE datname = :db_name"),
+        {"db_name": DATABASE},
+    )
+    if not result.fetchone():
+        conn.execute(text(f"CREATE DATABASE {DATABASE}"))
+        print(f" Database {DATABASE} was successful created!")
+    else:
+        print(f"Database {DATABASE} wsa created.")
+
 
 Base = declarative_base()
+
+SessionLocal = SessionLocal = sessionmaker(
+    autocommit=False, autoflush=False, bind=engine
+)
+
+db = SessionLocal()
 
 
 def get_db():
@@ -26,9 +45,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-async def get_async_db():
-    """Dependency to get async database session"""
-    async with async_session() as session:
-        yield session
