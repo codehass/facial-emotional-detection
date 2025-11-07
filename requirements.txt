@@ -12,3 +12,4 @@ pydantic
 psycopg2
 psycopg2-binary
 asyncpg
+python-dotenv
