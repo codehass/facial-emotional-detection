@@ -22,4 +22,4 @@ pip-delete-this-directory.txt
 
 .vscode/
 .env
-deep_learning/data
+deeplearning/data
