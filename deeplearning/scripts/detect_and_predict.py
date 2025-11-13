@@ -33,9 +33,6 @@ def emotion_detection(image_url):
             image, (x, y), (x + width, y + height), color=(255, 0, 0), thickness=2
         )
 
-    # on sauvegarde l'image
-    # cv2.imwrite("new.jpg", image)
-
     for x, y, w, h in faces:
         face = image[y : y + h, x : x + w]
         face_resized = cv2.resize(face, (48, 48))
@@ -48,21 +45,5 @@ def emotion_detection(image_url):
     confidence = np.max(predictions[0])
 
     predicted_emotion = emotion_labels[predicted_class]
-
-    for x, y, w, h in faces:
-        cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        cv2.putText(
-            image,
-            f"{predicted_emotion}",
-            (x, y - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.9,
-            (36, 255, 12),
-            2,
-        )
-
-    # cv2.imshow("Detected Face", image)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
 
     return [confidence, predicted_emotion]
