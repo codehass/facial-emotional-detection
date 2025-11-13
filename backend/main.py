@@ -1,6 +1,6 @@
 import sys
 import os
-import uuid, shutil, aiofiles
+import uuid, aiofiles
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,7 +24,7 @@ async def get_home():
 
 
 # create prediction endpoint
-@app.post("/predictions")
+@app.post("/predict_emotion")
 async def create_prediction(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
@@ -57,3 +57,10 @@ async def create_prediction(
         "emotion": predicted_emotion,
         "confidence": confidence,
     }
+
+
+@app.get("/history")
+async def get_history(db: Session = Depends(get_db)):
+    history = db.query(Prediction).all()
+
+    return {"history": history}
