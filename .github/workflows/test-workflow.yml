@@ -11,6 +11,7 @@ jobs:
       HOST: localhost
       PORT: 5432
       DATABASE: my_db
+      DATABASE_URL: postgresql://test_user:123456@localhost:5432/my_db
 
     services:
       postgres:
@@ -40,6 +41,8 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client libpq-dev
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
@@ -51,12 +54,9 @@ jobs:
             sleep 3
           done
 
-      - name: Run database to create tables
+      - name: Test PostgreSQL connection
         run: |
-          python - <<EOF
-          from backend.database import Base, engine
-          Base.metadata.create_all(bind=engine)
-          EOF
+          psql -h localhost -p 5432 -U $USER_DB -d $DATABASE -c "SELECT version();"
 
       - name: Run tests
         run: python -m unittest discover -s tests
