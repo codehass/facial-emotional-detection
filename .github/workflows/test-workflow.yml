@@ -1,0 +1,62 @@
+name: testing-workflow
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      USER_DB: test_user
+      PASSWORD: 123456
+      HOST: localhost
+      PORT: 5432
+      DATABASE: my_db
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{env.USER_DB}}
+          POSTGRES_PASSWORD: ${{env.PASSWORD}}
+          POSTGRES_DB: ${{env.DATABASE}}
+          DB_HOST: ${{env.HOST}}
+
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready 
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11.14"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            pg_isready -h localhost -p 5432 && break
+            echo "⏳ Waiting for PostgreSQL..."
+            sleep 3
+          done
+
+      - name: Run database to create tables
+        run: |
+          python - <<EOF
+          from backend.database import Base, engine
+          Base.metadata.create_all(bind=engine)
+          EOF
+
+      - name: Run tests
+        run: python -m unittest discover -s tests
