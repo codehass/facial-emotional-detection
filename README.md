@@ -1,5 +1,73 @@
 # facial-emotional-detection
 
+A lightweight FastAPI-based backend that performs face detection and emotion prediction from images using a trained TensorFlow CNN model (.keras).
+The system detects faces in an image, predicts emotions, and stores prediction history in a PostgreSQL database.
+
+## 🚀 Features
+
+- Face detection using OpenCV Haar Cascade
+
+- Emotion prediction using a TensorFlow CNN model
+
+- REST API using FastAPI
+
+- PostgreSQL database for storing prediction results
+
+- Environment-based configuration using .env
+
+- Unit tests using unittest
+
+- Docker-ready structure
+
+- Integrated GitHub Actions workflow for CI testing
+
+- Swagger auto-generated documentation
+
+- Easily extensible architecture
+
+### 🧠 Tech Stack
+
+- Backend: FastAPI, Python 3.11
+
+- ML/AI: TensorFlow, OpenCV
+
+- Database: PostgreSQL
+
+- ORM: psycopg2 (raw SQL)
+
+- Testing: unittest
+
+- Environment Management: python-dotenv, pyenv
+
+- API Docs: Swagger/OpenAPI
+
+- Version Control: Git + GitHub
+
+- CI/CD: GitHub Actions
+
+## 📁 Project Structure
+
+```
+facial-emotional-detection/
+├── backend/
+│ ├── app/
+│ │ ├── config.py
+│ │ ├── database.py
+│ │ ├── main.py
+│ │ ├── models/
+│ │ ├── schemas/
+│ │ ├── routers/
+│ │ ├── ml/
+│ │ │ ├── model.keras
+│ │ │ └── haarcascade_frontalface_default.xml
+│ │ └── utils/
+│ ├── tests/
+│ └── requirements.txt
+├── .env.example
+├── README.md
+└── docker-compose.yml (if added later)
+```
+
 ## Setup Instructions
 
 ### 1- Clone the repository:
