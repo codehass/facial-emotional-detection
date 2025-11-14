@@ -55,6 +55,9 @@ jobs:
           done
 
       - name: Test PostgreSQL connection
+        env:
+          PGPASSWORD: ${{ env.PASSWORD }}
+
         run: |
           psql -h localhost -p 5432 -U $USER_DB -d $DATABASE -c "SELECT version();"
 
