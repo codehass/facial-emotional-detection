@@ -2,7 +2,14 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 import os
 from dotenv import load_dotenv
-from config import USER, PASSWORD, HOST, PORT, DATABASE
+
+load_dotenv()
+
+USER = os.getenv("USER_DB")
+PASSWORD = os.getenv("PASSWORD")
+HOST = os.getenv("HOST")
+PORT = os.getenv("PORT")
+DATABASE = os.getenv("DATABASE")
 
 # First connect to the default "postgres" database
 DEFAULT_DB_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/postgres"
