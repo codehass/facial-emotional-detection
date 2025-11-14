@@ -1,20 +1,29 @@
 import os
-import pytest
-from fastapi.testclient import TestClient
-from backend.main import app
+import unittest
+import tensorflow as tf
 
-client = TestClient(app)
+MODEL_PATH = "./deeplearning/emotion_face_detection.keras"
 
 
-def test_prediction_format():
+class TestModel(unittest.TestCase):
 
-    file_path = "tests/girl.jpg"
-    assert os.path.isfile(file_path)
+    @classmethod
+    def setUpClass(cls):
+        """Load the model once for all tests."""
+        if os.path.isfile(MODEL_PATH):
+            cls.model = tf.keras.models.load_model(MODEL_PATH)
+        else:
+            cls.model = None
 
-    with open(file_path, "rb") as img:
-        response = client.post(
-            "/predictions/", files={"file": ("girl.jpg", img, "image/jpg")}
-        )
+    def test_model_file_exists(self):
+        """Ensure the model file exists."""
+        self.assertTrue(os.path.isfile(MODEL_PATH))
 
-    assert response.status_code == 200
-    # data = response.json()
+    def test_model_load_successfully(self):
+        """Ensure the model loads successfully."""
+        self.assertIsNotNone(self.model)
+        self.assertIsInstance(self.model, tf.keras.Model)
+
+
+if __name__ == "__main__":
+    unittest.main()
