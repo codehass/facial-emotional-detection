@@ -3,9 +3,23 @@ import cv2
 import tensorflow as tf
 import numpy as np
 
+import os
+import tensorflow as tf
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(SCRIPT_DIR, "../emotion_face_detection.keras")
+MODEL_PATH = os.path.abspath(MODEL_PATH)
+
+HARRAR_CASCADE_PATH = os.path.join(SCRIPT_DIR, "../haarcascade_frontalface_default.xml")
+HARRAR_CASCADE_PATH = os.path.abspath(HARRAR_CASCADE_PATH)
+
+facial_detection_model = tf.keras.models.load_model(MODEL_PATH)
+
 ## load model, haarcascade, labels and image dimensions
-facial_detection_model = tf.keras.models.load_model("emotion_face_detection.keras")
-HARRAR_CASCADE_PATH = "haarcascade_frontalface_default.xml"
+# facial_detection_model = tf.keras.models.load_model("../emotion_face_detection.keras")
+# HARRAR_CASCADE_PATH = "../haarcascade_frontalface_default.xml"
+
 IMAGE_HEIGHT = 48
 IMAGE_WIDTH = 48
 emotion_labels = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"]
