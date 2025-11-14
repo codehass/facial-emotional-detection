@@ -2,7 +2,7 @@ import pytest
 import os
 import tensorflow as tf
 
-MODEL_PATH = "emotion_face_detection.keras"
+MODEL_PATH = "./deeplearning/emotion_face_detection.keras"
 
 
 @pytest.fixture
