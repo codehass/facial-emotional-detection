@@ -46,5 +46,17 @@
 
   ```shell
     cd backend
-    uvicorn main:app --reload
+    uvicorn backend.main:app --reload
+  ```
+
+### 5- Access the application:
+
+- Open your web browser and navigate to `http://localhost:8000/docs`
+
+### 6- Run Tests:
+
+- To run the tests, use the following command:
+
+  ```shell
+    python -m unittest discover -s tests
   ```
