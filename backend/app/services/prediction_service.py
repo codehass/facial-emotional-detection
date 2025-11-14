@@ -1,6 +1,5 @@
 import os
-import uuid
-import aiofiles
+import uuid, aiofiles
 from sqlalchemy.orm import Session
 from app.models.prediction_model import Prediction
 from deeplearning.scripts.detect_and_predict import emotion_detection
