@@ -15,3 +15,4 @@ asyncpg
 python-dotenv
 python-multipart
 httpx
+aiofiles
